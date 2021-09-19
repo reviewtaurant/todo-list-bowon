@@ -70,6 +70,10 @@ export default function App() {
         setNewTask(text);
     }; //새로운 task를 추가하는 함수 삽입
 
+    const _onBlur = () => {
+        setNewTask('');
+    }; // Input 컴포넌트가 포커스를 잃으면 추가 중이던 값을 초기화하는 함수 삽입
+
     return (
         <ThemeProvider theme={theme}>
             <Container>
@@ -82,7 +86,8 @@ export default function App() {
                     placeholder="+ Add a Task"
                     value={newTask}
                     onChangeText={_handleTextChange}
-                    onSubmitEditing={_addTask} 
+                    onSubmitEditing={_addTask}
+                    onBlur={_onBlur} 
                 />
                 <List width={width}>
                     {Object.values(tasks)

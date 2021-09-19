@@ -29,7 +29,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => { // props로 할
 
     const _handleUpdateButtonPress = () => {
         setIsEditing(true);
-    };
+    }; // 수정버튼을 누르면 수정여부를 결정하는 변수를 변경
 
     const _onSubmitEditing = () => {
         if (isEditing) {
@@ -37,7 +37,14 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => { // props로 할
             setIsEditing(false);
             updateTask(editedTask);
         }
-    };
+    }; // 수정버튼이 제출되었을때 내용을 받아서 수정하는 함수
+
+    const _onBlur = () => {
+        if (isEditing) {
+        setIsEditing(false);
+        setText(item.text);
+        }
+    }; // Input 컴포넌트가 포커스를 잃었을 때 초기화하는 함수
 
     // isEditing 변수의 값에 따라 리턴 값이 다르게 렌더링됨
     return isEditing ? (
@@ -45,6 +52,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => { // props로 할
             value={text}
             onChangeText={text => setText(text)}
             onSubmitEditing={_onSubmitEditing}
+            onBlur={_onBlur}
         />
     ) : (
         <Container>

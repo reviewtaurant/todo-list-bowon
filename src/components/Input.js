@@ -16,7 +16,13 @@ const StyledInput = styled.TextInput.attrs(({ theme }) => ({
     color: ${({ theme }) => theme.text};
 `; // attrs를 이용해 placeholder 텍스트값을 props로 넘겨 받아 표시하게 함
 
-const Input = ({placeholder, value, onChangeText, onSubmitEditing}) => {
+const Input = ({
+    placeholder,
+    value, 
+    onChangeText, 
+    onSubmitEditing,
+    onBlur,
+}) => {
     const width = useWindowDimensions().width;
 
     return (
@@ -30,6 +36,7 @@ const Input = ({placeholder, value, onChangeText, onSubmitEditing}) => {
             value={value}
             onChangeText={onChangeText}
             onSubmitEditing={onSubmitEditing}
+            onBlur={onBlur}
         />
     ); // props로 전달되는 값을 설정함
 };
@@ -39,6 +46,7 @@ Input.propTypes = {
     value: PropTypes.string.isRequired,
     onChangeText: PropTypes.func.isRequired,
     onSubmitEditing: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
 }; //propsTypes를 이용해 전달되는 값들의 타입과 필수 여부를 지정
 
 export default Input;
