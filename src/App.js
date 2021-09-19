@@ -4,7 +4,8 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import Input from './components/Input';
 import Task from './components/Task';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppLoading from 'expo-app-loading';
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -29,6 +30,7 @@ const List = styled.ScrollView`
 const width = Dimensions.get('window').width;
 
 export default function App() {
+    const [isReady, setIsReady] = useState(false); // 데이터를 불러오기 위해 변수와 setter 함수 생성
     const [newTask, setNewTask] = useState(''); //task 변수의 추가와 setter 함수 추가
 
     const [tasks, setTasks] = useState({}); 
@@ -42,6 +44,11 @@ export default function App() {
             console.error(e);
         }
     }; // task에 저장된 데이터를 json 형태로 저장하는 함수
+
+    const _loadTasks = async () => {
+        const loadedTasks = await AsyncStorage.getItem('tasks');
+        setTasks(JSON.parse(loadedTasks || '{}'));
+    }; // 저장한 json 데이터를 불러와서 파싱하는 함수
 
     const _addTask = () => {
         const ID = Date.now().toString();
@@ -80,7 +87,7 @@ export default function App() {
         setNewTask('');
     }; // Input 컴포넌트가 포커스를 잃으면 추가 중이던 값을 초기화하는 함수 삽입
 
-    return (
+    return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
                 <StatusBar
@@ -110,5 +117,11 @@ export default function App() {
                 </List>
             </Container>
         </ThemeProvider>
+    ) : (
+        <AppLoading
+            startAsync={_loadTasks}
+            onFinish={() => setIsReady(true)}
+            onError={console.error}
+        />
     );
 }
