@@ -48,6 +48,12 @@ export default function App() {
         setTasks({ ...tasks, ...newTaskObject });
     }; // task를 추가하는 함수 삽입
 
+    const _deleteTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        delete currentTasks[id];
+        setTasks(currentTasks);
+    }; // task를 삭제하는 함수 삽입
+
     const _handleTextChange = text => {
         setNewTask(text);
     }; //새로운 task를 추가하는 함수 삽입
@@ -70,7 +76,7 @@ export default function App() {
                     {Object.values(tasks)
                         .reverse() // 역순으로 배열되게해서 최신 항목이 잘 보이게 함
                         .map(item => (
-                            <Task key={item.id} text={item.text}/>
+                            <Task key={item.id} item={item} deleteTask={_deleteTask}/>
                         ))}
                 </List>
             </Container>
