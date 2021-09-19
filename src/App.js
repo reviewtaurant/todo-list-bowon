@@ -54,6 +54,12 @@ export default function App() {
         setTasks(currentTasks);
     }; // task를 삭제하는 함수 삽입
 
+    const _toggleTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        currentTasks[id]['completed'] = !currentTasks[id]['completed'];
+        setTasks(currentTasks);
+    }; // 완료 기능을 수행하는 함수 삽입
+
     const _handleTextChange = text => {
         setNewTask(text);
     }; //새로운 task를 추가하는 함수 삽입
@@ -76,7 +82,12 @@ export default function App() {
                     {Object.values(tasks)
                         .reverse() // 역순으로 배열되게해서 최신 항목이 잘 보이게 함
                         .map(item => (
-                            <Task key={item.id} item={item} deleteTask={_deleteTask}/>
+                            <Task 
+                                key={item.id} 
+                                item={item} 
+                                deleteTask={_deleteTask}
+                                toggleTask={_toggleTask}
+                            />
                         ))}
                 </List>
             </Container>

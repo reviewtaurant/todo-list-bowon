@@ -19,10 +19,14 @@ const Container = styled.View`
     color: ${({ theme }) => theme.text};
 `;
 
-const Task = ({ item, deleteTask }) => { // props로 할 일 내용이 전달됨
+const Task = ({ item, deleteTask, toggleTask }) => { // props로 할 일 내용이 전달됨
     return (
         <Container>
-            <IconButton type={images.uncompleted} />
+            <IconButton 
+                type={item.completed ? images.completed : images.uncompleted}
+                id={item.id}
+                onPressOut={toggleTask}
+            />
             <Contents>{item.text}</Contents>
             <IconButton type={images.update} />
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask} />
@@ -31,8 +35,9 @@ const Task = ({ item, deleteTask }) => { // props로 할 일 내용이 전달됨
 };
 
 Task.propTypes = {
-    item: PropTypes.string.isRequired,
+    item: PropTypes.object.isRequired,
     deleteTask: PropTypes.func.isRequired,
+    toggleTask: PropTypes.func.isRequired,
 }; // props의 형식에 propTypes 작성
 
 export default Task;
