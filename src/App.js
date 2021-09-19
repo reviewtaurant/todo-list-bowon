@@ -28,11 +28,24 @@ const List = styled.ScrollView`
 const width = Dimensions.get('window').width;
 
 export default function App() {
-    const [newTask, setNewTask] = useState(''); //tast 변수의 추가와 setter 함수 추가
+    const [newTask, setNewTask] = useState(''); //task 변수의 추가와 setter 함수 추가
+
+    const [tasks, setTasks] = useState({
+        '1': { id: '1', text: 'Hanbit', completed: false },
+        '2': { id: '2', text: 'React Native', completed: true },
+        '3': { id: '3', text: 'React Native Sample', completed: false },
+        '4': { id: '4', text: 'Edit TODO Item', completed: false },
+    }); //useState를 이용해 할 일 목록을 저장하고 관리할 tasks 변수 생성, setter 함수 생성
 
     const _addTask = () => {
-        alert(`Add: ${newTask}`);
+        const ID = Date.now().toString();
+
+        const newTaskObject = {
+            [ID]: { id: ID, text: newTask, completed: false },
+        };
+
         setNewTask('');
+        setTasks({ ...tasks, ...newTaskObject });
     }; // task를 추가하는 함수 삽입
 
     const _handleTextChange = text => {
@@ -54,10 +67,11 @@ export default function App() {
                     onSubmitEditing={_addTask} 
                 />
                 <List width={width}>
-                    <Task text="Hanbit" />
-                    <Task text="React Native" />
-                    <Task text="React Native Sample" />
-                    <Task text="Edit TODO Item" />
+                    {Object.values(tasks)
+                        .reverse() // 역순으로 배열되게해서 최신 항목이 잘 보이게 함
+                        .map(item => (
+                            <Task key={item.id} text={item.text}/>
+                        ))}
                 </List>
             </Container>
         </ThemeProvider>
