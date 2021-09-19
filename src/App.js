@@ -9,7 +9,7 @@ const Container = styled.SafeAreaView`
     background-color: ${({ theme }) => theme.background};
     align-items: center;
     justify-content: flex-start;
-`; // SafeAreaView로 아이폰 노치 디자인 문제 해결
+`;
 
 const Title = styled.Text`
     font-size: 40px;
@@ -28,8 +28,8 @@ export default function App() {
                     backgroundColor={theme.background}
                 />
                 <Title>TODO List</Title>
-                <Input />
+                <Input placeholder="+ Add a Task" />
             </Container>
         </ThemeProvider>
     );
-}// StatusBar를 이용하여 상태 바와 컴포넌트가 겹치지 않게 함
+}
