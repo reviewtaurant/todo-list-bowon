@@ -11,12 +11,14 @@ const Container = styled.View`
     border-radius: 10px;
     padding: 5px;
     margin: 3px 0px;
- `;
+`;
 
- const Contents = styled.Text`
+const Contents = styled.Text`
     flex: 1;
     font-size: 24px;
-    color: ${({ theme }) => theme.text};
+    color: ${({ theme, completed }) => (completed ? theme.done : theme.text)};
+    text-decoration-line: ${({ completed }) => 
+        completed ? 'line-through' : 'none'};
 `;
 
 const Task = ({ item, deleteTask, toggleTask }) => { // props로 할 일 내용이 전달됨
@@ -26,10 +28,16 @@ const Task = ({ item, deleteTask, toggleTask }) => { // props로 할 일 내용�
                 type={item.completed ? images.completed : images.uncompleted}
                 id={item.id}
                 onPressOut={toggleTask}
+                completed={item.completed}
             />
-            <Contents>{item.text}</Contents>
-            <IconButton type={images.update} />
-            <IconButton type={images.delete} id={item.id} onPressOut={deleteTask} />
+            <Contents completed={item.completed}>{item.text}</Contents>
+            {item.completed || <IconButton type={images.update}/>}
+            <IconButton 
+                type={images.delete} 
+                id={item.id} 
+                onPressOut={deleteTask}
+                completed={item.completed} 
+            />
         </Container>
     ); //완료, 추가, 삭제 버튼이 추가됨
 };
