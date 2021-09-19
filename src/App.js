@@ -60,6 +60,12 @@ export default function App() {
         setTasks(currentTasks);
     }; // 완료 기능을 수행하는 함수 삽입
 
+    const _updateTask = item => {
+        const currentTasks = Object.assign({}, tasks);
+        currentTasks[item.id] = item;
+        setTasks(currentTasks);
+    }; // 수정 기능을 수행하는 함수 삽입
+
     const _handleTextChange = text => {
         setNewTask(text);
     }; //새로운 task를 추가하는 함수 삽입
@@ -87,6 +93,7 @@ export default function App() {
                                 item={item} 
                                 deleteTask={_deleteTask}
                                 toggleTask={_toggleTask}
+                                updateTask={_updateTask}
                             />
                         ))}
                 </List>
