@@ -4,6 +4,7 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import Input from './components/Input';
 import Task from './components/Task';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -30,12 +31,17 @@ const width = Dimensions.get('window').width;
 export default function App() {
     const [newTask, setNewTask] = useState(''); //task 변수의 추가와 setter 함수 추가
 
-    const [tasks, setTasks] = useState({
-        '1': { id: '1', text: 'Hanbit', completed: false },
-        '2': { id: '2', text: 'React Native', completed: true },
-        '3': { id: '3', text: 'React Native Sample', completed: false },
-        '4': { id: '4', text: 'Edit TODO Item', completed: false },
-    }); //useState를 이용해 할 일 목록을 저장하고 관리할 tasks 변수 생성, setter 함수 생성
+    const [tasks, setTasks] = useState({}); 
+    //useState를 이용해 할 일 목록을 저장하고 관리할 tasks 변수 생성, setter 함수 생성
+
+    const _saveTasks = async tasks => {
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+            setTasks(tasks);
+        } catch (e) {
+            console.error(e);
+        }
+    }; // task에 저장된 데이터를 json 형태로 저장하는 함수
 
     const _addTask = () => {
         const ID = Date.now().toString();
@@ -45,25 +51,25 @@ export default function App() {
         };
 
         setNewTask('');
-        setTasks({ ...tasks, ...newTaskObject });
+        _saveTasks({ ...tasks, ...newTaskObject });
     }; // task를 추가하는 함수 삽입
 
     const _deleteTask = id => {
         const currentTasks = Object.assign({}, tasks);
         delete currentTasks[id];
-        setTasks(currentTasks);
+        _saveTasks(currentTasks);
     }; // task를 삭제하는 함수 삽입
 
     const _toggleTask = id => {
         const currentTasks = Object.assign({}, tasks);
         currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-        setTasks(currentTasks);
+        _saveTasks(currentTasks);
     }; // 완료 기능을 수행하는 함수 삽입
 
     const _updateTask = item => {
         const currentTasks = Object.assign({}, tasks);
         currentTasks[item.id] = item;
-        setTasks(currentTasks);
+        _saveTasks(currentTasks);
     }; // 수정 기능을 수행하는 함수 삽입
 
     const _handleTextChange = text => {
