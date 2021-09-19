@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StatusBar } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
@@ -20,6 +20,17 @@ const Title = styled.Text`
 `;
 
 export default function App() {
+    const [newTask, setNewTask] = useState(''); //tast 변수의 추가와 setter 함수 추가
+
+    const _addTask = () => {
+        alert(`Add: ${newTask}`);
+        setNewTask('');
+    }; // task를 추가하는 함수 삽입
+
+    const _handleTextChange = text => {
+        setNewTask(text);
+    }; //새로운 task를 추가하는 함수 삽입
+
     return (
         <ThemeProvider theme={theme}>
             <Container>
@@ -28,7 +39,12 @@ export default function App() {
                     backgroundColor={theme.background}
                 />
                 <Title>TODO List</Title>
-                <Input placeholder="+ Add a Task" />
+                <Input 
+                    placeholder="+ Add a Task"
+                    value={newTask}
+                    onChangeText={_handleTextChange}
+                    onSubmitEditing={_addTask} 
+                />
             </Container>
         </ThemeProvider>
     );
