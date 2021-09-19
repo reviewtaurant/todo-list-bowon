@@ -23,8 +23,11 @@ const Input = ({placeholder}) => {
             width={width} 
             placeholder={placeholder} 
             maxLength={50}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="done"
         />
-    );
+    ); // TextInput의 기능을 활용해 키보드를 수정함
 };
 
 export default Input;
